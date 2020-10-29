@@ -20,6 +20,7 @@ const StyledTreeNode = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
   padding: 5px 8px;
   padding-left: ${(props: { level: number; type: string }) =>
     getPaddingLeft(props.level, props.type)}px;
@@ -48,10 +49,16 @@ interface TreeNodeProps {
 const TreeNode: FC<TreeNodeProps> = (props) => {
   const { node, getChildNodes, level = 0, onToggle, onNodeSelect } = props;
 
+  const childNodes = getChildNodes(node);
+
   return (
     <React.Fragment>
-      <StyledTreeNode level={level} type={node.type}>
-        <NodeIcon onClick={() => onToggle(node)}>
+      <StyledTreeNode
+        level={level}
+        type={node.type}
+        onClick={() => onToggle(node)}
+      >
+        <NodeIcon>
           {node.type === "folder" &&
             (node.isOpen ? <FaChevronDown /> : <FaChevronRight />)}
         </NodeIcon>
@@ -68,7 +75,7 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
       </StyledTreeNode>
 
       {node.isOpen &&
-        getChildNodes(node).map((childNode: TreeNodeType) => (
+        childNodes.map((childNode: TreeNodeType) => (
           <TreeNode {...props} node={childNode} level={level + 1} />
         ))}
     </React.Fragment>

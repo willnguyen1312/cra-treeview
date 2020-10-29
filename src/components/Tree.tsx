@@ -9,35 +9,36 @@ const data: Record<string, TreeNodeType> = {
     path: "/root",
     type: "folder",
     isRoot: true,
-    children: ["/root/david", "/root/jslancer"],
+    isOpen: true,
+    children: ["/root/nam", "/root/vi"],
   },
-  "/root/david": {
-    path: "/root/david",
+  "/root/nam": {
+    path: "/root/nam",
     type: "folder",
-    children: ["/root/david/readme.md"],
+    children: ["/root/nam/about.md"],
   },
-  "/root/david/readme.md": {
-    path: "/root/david/readme.md",
+  "/root/nam/about.md": {
+    path: "/root/nam/about.md",
     type: "file",
-    content: "Thanks for reading me me. But there is nothing here.",
+    content: "Thanks for coming by 😋",
   },
-  "/root/jslancer": {
-    path: "/root/jslancer",
+  "/root/vi": {
+    path: "/root/vi",
     type: "folder",
-    children: ["/root/jslancer/projects", "/root/jslancer/vblogs"],
+    children: ["/root/vi/jobs", "/root/vi/blogs"],
   },
-  "/root/jslancer/projects": {
-    path: "/root/jslancer/projects",
+  "/root/vi/jobs": {
+    path: "/root/vi/jobs",
     type: "folder",
-    children: ["/root/jslancer/projects/treeview"],
+    children: ["/root/vi/jobs/qa"],
   },
-  "/root/jslancer/projects/treeview": {
-    path: "/root/jslancer/projects/treeview",
+  "/root/vi/jobs/qa": {
+    path: "/root/vi/jobs/qa",
     type: "folder",
     children: [],
   },
-  "/root/jslancer/vblogs": {
-    path: "/root/jslancer/vblogs",
+  "/root/vi/blogs": {
+    path: "/root/vi/blogs",
     type: "folder",
     children: [],
   },
