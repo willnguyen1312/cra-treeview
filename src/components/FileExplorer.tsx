@@ -21,7 +21,11 @@ interface FileExplorerState {
 export default class FileExplorer extends Component<{}, FileExplorerState> {
   state: FileExplorerState = {};
 
-  onSelect = (node: TreeNodeType) => this.setState({ selectedNode: node });
+  onSelect = (node: TreeNodeType) => {
+    console.log(node);
+
+    this.setState({ selectedNode: node });
+  };
 
   render() {
     const { selectedNode } = this.state;

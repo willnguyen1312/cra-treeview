@@ -85,6 +85,7 @@ export default class Tree extends Component<TreeProps, TreeState> {
       <div>
         {rootNodes.map((node) => (
           <TreeNode
+            key={node.path}
             node={node}
             getChildNodes={this.getChildNodes}
             onToggle={this.onToggle}

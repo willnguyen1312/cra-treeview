@@ -75,14 +75,26 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
           )}
         </NodeIcon>
 
-        <span role="button" onClick={() => onNodeSelect(node)}>
+        <span
+          role="button"
+          onClick={() => {
+            if (node.type === "file") {
+              onNodeSelect(node);
+            }
+          }}
+        >
           {getNodeLabel(node)}
         </span>
       </StyledTreeNode>
 
       {node.isOpen &&
         childNodes.map((childNode: TreeNodeType) => (
-          <TreeNode {...props} node={childNode} level={level + 1} />
+          <TreeNode
+            key={childNode.path}
+            {...props}
+            node={childNode}
+            level={level + 1}
+          />
         ))}
     </React.Fragment>
   );
