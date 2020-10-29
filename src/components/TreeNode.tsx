@@ -64,9 +64,15 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
         </NodeIcon>
 
         <NodeIcon marginRight={10}>
-          {node.type === "file" && <FaFile />}
-          {node.type === "folder" && node.isOpen === true && <FaFolderOpen />}
-          {node.type === "folder" && !node.isOpen && <FaFolder />}
+          {node.type === "file" && (
+            <FaFile size="2em" className="text-red-700" />
+          )}
+          {node.type === "folder" && node.isOpen === true && (
+            <FaFolderOpen size="2em" className="text-blue-700" />
+          )}
+          {node.type === "folder" && !node.isOpen && (
+            <FaFolder size="2em" className="text-blue-700" />
+          )}
         </NodeIcon>
 
         <span role="button" onClick={() => onNodeSelect(node)}>
