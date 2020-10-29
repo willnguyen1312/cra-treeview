@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-
-import styles from "./App.module.css";
+import React from "react";
 
 function App() {
-  const [counter, setCounter] = useState(0);
   return (
-    <div className={styles.wrapper}>
-      <h1>Counter: {counter}</h1>
-      <button onClick={() => setCounter(counter + 1)}>Click me</button>
+    <div className="max-w-md mx-auto flex p-6 bg-gray-100 mt-10 rounded-lg shadow-xl">
+      <div className="ml-6 pt-1">
+        <h1 className="text-2xl text-blue-700 leading-tight">
+          Tailwind and Create React App
+        </h1>
+        <p className="text-base text-gray-700 leading-normal">
+          Building apps together
+        </p>
+      </div>
     </div>
   );
 }
