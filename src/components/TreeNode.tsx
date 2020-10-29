@@ -10,24 +10,47 @@ import styled from "styled-components";
 import last from "lodash/last";
 import { TreeNodeType } from "../types";
 
-const getPaddingLeft = (level: number, type: string) => {
-  let paddingLeft = level * 20;
-  if (type === "file") paddingLeft += 20;
-  return paddingLeft;
+const MARGIN_LEFT = 20;
+const MARGIN_BOTTOM = 10;
+
+const getMarginLeft = (level: number, type: string) => {
+  return level * MARGIN_LEFT;
+  // if (type === "file") paddingLeft += 20;
+  // return paddingLeft;
 };
 
 const StyledTreeNode = styled.div`
+  background: greenyellow;
+  margin-bottom: ${MARGIN_BOTTOM}px;
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   cursor: pointer;
   padding: 5px 8px;
-  padding-left: ${(props: { level: number; type: string }) =>
-    getPaddingLeft(props.level, props.type)}px;
+  margin-left: ${(props: { level: number; type: string }) =>
+    getMarginLeft(props.level, props.type)}px;
 
   &:hover {
     background: lightgray;
   }
+`;
+
+const StyledTreeNodeHor = styled.div`
+  left: -${MARGIN_LEFT - MARGIN_LEFT / 2}px;
+  position: absolute;
+  width: ${MARGIN_LEFT - MARGIN_LEFT / 2}px;
+  height: 1px;
+  background-color: #000;
+`;
+
+const StyledTreeNodeVer = styled.div`
+  left: -${MARGIN_LEFT - MARGIN_LEFT / 2}px;
+  position: absolute;
+  width: 1px;
+  height: ${MARGIN_BOTTOM + 17}px;
+  transform: translateY(${-(MARGIN_BOTTOM + 17) / 2}px);
+  background-color: #000;
 `;
 
 const NodeIcon = styled.div`
@@ -38,7 +61,16 @@ const NodeIcon = styled.div`
 
 const getNodeLabel = (node: TreeNodeType) => last(node.path.split("/"));
 
+const getNumberOfNodeAbove = (
+  node: TreeNodeType,
+  nodes: Record<string, TreeNodeType>
+) => {
+  const lastIndexOfLash = node.path.lastIndexOf("/");
+  // const parent =
+};
+
 interface TreeNodeProps {
+  nodes: Record<string, TreeNodeType>;
   node: TreeNodeType;
   getChildNodes: (node: TreeNodeType) => TreeNodeType[];
   onToggle: (node: TreeNodeType) => void;
@@ -47,9 +79,18 @@ interface TreeNodeProps {
 }
 
 const TreeNode: FC<TreeNodeProps> = (props) => {
-  const { node, getChildNodes, level = 0, onToggle, onNodeSelect } = props;
+  const {
+    node,
+    getChildNodes,
+    level = 0,
+    onToggle,
+    onNodeSelect,
+    nodes,
+  } = props;
 
   const childNodes = getChildNodes(node);
+
+  console.log(getNumberOfNodeAbove(node, nodes));
 
   return (
     <React.Fragment>
@@ -62,6 +103,13 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
           {node.type === "folder" &&
             (node.isOpen ? <FaChevronDown /> : <FaChevronRight />)}
         </NodeIcon>
+
+        {node.isRoot ? null : (
+          <>
+            <StyledTreeNodeHor />
+            <StyledTreeNodeVer />
+          </>
+        )}
 
         <NodeIcon marginRight={10}>
           {node.type === "file" && (

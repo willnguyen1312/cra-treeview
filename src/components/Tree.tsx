@@ -15,6 +15,7 @@ const data: Record<string, TreeNodeType> = {
   "/root/nam": {
     path: "/root/nam",
     type: "folder",
+    isOpen: true,
     children: ["/root/nam/about.md"],
   },
   "/root/nam/about.md": {
@@ -80,6 +81,7 @@ export default class Tree extends Component<TreeProps, TreeState> {
   };
 
   render() {
+    const { nodes } = this.state;
     const rootNodes = this.getRootNodes();
     return (
       <div>
@@ -87,6 +89,7 @@ export default class Tree extends Component<TreeProps, TreeState> {
           <TreeNode
             key={node.path}
             node={node}
+            nodes={nodes}
             getChildNodes={this.getChildNodes}
             onToggle={this.onToggle}
             onNodeSelect={this.onNodeSelect}
