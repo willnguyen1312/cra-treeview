@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import {
   FaFile,
   FaFolder,
@@ -11,8 +11,6 @@ import last from "lodash/last";
 import { TreeNodeType } from "../types";
 
 const MARGIN_LEFT = 20;
-const MARGIN_BOTTOM = 10;
-const BOX_HEIGHT = 34;
 
 const getMarginLeft = (level: number, type: string) => {
   return level * MARGIN_LEFT;
@@ -21,8 +19,6 @@ const getMarginLeft = (level: number, type: string) => {
 };
 
 const StyledTreeNode = styled.div`
-  background: greenyellow;
-  margin-bottom: ${MARGIN_BOTTOM}px;
   position: relative;
   display: flex;
   flex-direction: row;
@@ -49,15 +45,8 @@ const StyledTreeNodeVer = styled.div`
   left: -${MARGIN_LEFT - MARGIN_LEFT / 2}px;
   position: absolute;
   width: 1px;
-  /* height: ${MARGIN_BOTTOM + 17}px; */
-  height: ${(props: { depth?: number }) =>
-    props.depth &&
-    `${MARGIN_BOTTOM * props.depth + BOX_HEIGHT * (props.depth - 0.5)}px`};
-  transform: ${(props: { depth?: number }) =>
-    props.depth &&
-    `translateY(-${
-      (MARGIN_BOTTOM * props.depth + BOX_HEIGHT * (props.depth - 0.5)) / 2
-    }px)`};
+  height: ${(props: { tall: number }) => props.tall + "px"};
+  transform: ${(props: { tall: number }) => `translateY(-${props.tall / 2}px)`};
   background-color: #000;
 `;
 
@@ -138,6 +127,8 @@ interface TreeNodeProps {
 }
 
 const TreeNode: FC<TreeNodeProps> = (props) => {
+  const [height, setHeight] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const {
     node,
     getChildNodes,
@@ -151,9 +142,30 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
 
   const depth = getDepthUp(node, nodes);
 
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      if (node.path !== "/root") {
+        let prevParent: any = null;
+        let distance = depth - 1;
+        let height = 0;
+
+        while (distance !== 0) {
+          prevParent = container.previousSibling;
+          height += getAbsoluteHeight(prevParent as HTMLElement);
+          distance--;
+        }
+
+        height += getAbsoluteHeight(container as HTMLElement) / 2;
+        setHeight(height);
+      }
+    }
+  }, [depth, node.path]);
+
   return (
     <React.Fragment>
       <StyledTreeNode
+        ref={containerRef}
         level={level}
         type={node.type}
         onClick={() => onToggle(node)}
@@ -166,7 +178,7 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
         {node.isRoot ? null : (
           <>
             <StyledTreeNodeHor />
-            <StyledTreeNodeVer depth={depth} />
+            <StyledTreeNodeVer tall={height} />
           </>
         )}
 
