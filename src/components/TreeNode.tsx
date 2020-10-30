@@ -133,7 +133,7 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
 
   const childNodes = getChildNodes(node);
 
-  if (node.path === "/root/nam/about.md") {
+  if (node.path === "/root/vi/jobs/qa") {
     console.log(getDepthUp(node, nodes));
   }
 
