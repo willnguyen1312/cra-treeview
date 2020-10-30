@@ -12,6 +12,7 @@ import { TreeNodeType } from "../types";
 
 const MARGIN_LEFT = 20;
 const MARGIN_BOTTOM = 10;
+const BOX_HEIGHT = 34;
 
 const getMarginLeft = (level: number, type: string) => {
   return level * MARGIN_LEFT;
@@ -48,8 +49,15 @@ const StyledTreeNodeVer = styled.div`
   left: -${MARGIN_LEFT - MARGIN_LEFT / 2}px;
   position: absolute;
   width: 1px;
-  height: ${MARGIN_BOTTOM + 17}px;
-  transform: translateY(${-(MARGIN_BOTTOM + 17) / 2}px);
+  /* height: ${MARGIN_BOTTOM + 17}px; */
+  height: ${(props: { depth?: number }) =>
+    props.depth &&
+    `${MARGIN_BOTTOM * props.depth + BOX_HEIGHT * (props.depth - 0.5)}px`};
+  transform: ${(props: { depth?: number }) =>
+    props.depth &&
+    `translateY(-${
+      (MARGIN_BOTTOM * props.depth + BOX_HEIGHT * (props.depth - 0.5)) / 2
+    }px)`};
   background-color: #000;
 `;
 
@@ -141,9 +149,7 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
 
   const childNodes = getChildNodes(node);
 
-  if (node.path === "/root/vi/jobs/qa") {
-    console.log(getDepthUp(node, nodes));
-  }
+  const depth = getDepthUp(node, nodes);
 
   return (
     <React.Fragment>
@@ -160,7 +166,7 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
         {node.isRoot ? null : (
           <>
             <StyledTreeNodeHor />
-            <StyledTreeNodeVer />
+            <StyledTreeNodeVer depth={depth} />
           </>
         )}
 
