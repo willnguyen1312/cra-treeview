@@ -61,12 +61,55 @@ const NodeIcon = styled.div`
 
 const getNodeLabel = (node: TreeNodeType) => last(node.path.split("/"));
 
-const getNumberOfNodeAbove = (
+export const getDepthUp = (
   node: TreeNodeType,
   nodes: Record<string, TreeNodeType>
 ) => {
-  const lastIndexOfLash = node.path.lastIndexOf("/");
-  // const parent =
+  const lastIndexOfSlash = node.path.lastIndexOf("/");
+  const parentPath = node.path.slice(0, lastIndexOfSlash);
+  const parentNode = nodes[parentPath];
+  let siblings: TreeNodeType[] = [];
+  if (parentNode && parentNode.children) {
+    const currentNodeIndex = parentNode.children.indexOf(node.path);
+    siblings = parentNode.children
+      .slice(0, currentNodeIndex)
+      .map((path) => nodes[path]) as TreeNodeType[];
+  }
+
+  let result = 0;
+
+  if (parentNode) {
+    result = result + 1 + getDepthUp(parentNode, nodes);
+  }
+
+  if (siblings.length) {
+    siblings.forEach((sibling) => {
+      result = result + getDepthDown(sibling, nodes);
+    });
+  }
+
+  return result;
+};
+
+const getDepthDown = (
+  node: TreeNodeType,
+  nodes: Record<string, TreeNodeType>
+) => {
+  let result = 1;
+  const children = node.children || [];
+
+  if (!node.isOpen) {
+    return 1;
+  }
+
+  if (children.length) {
+    children.forEach((child) => {
+      const node = nodes[child] as TreeNodeType;
+      result = result + getDepthDown(node, nodes);
+    });
+  }
+
+  return result;
 };
 
 interface TreeNodeProps {
@@ -90,7 +133,9 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
 
   const childNodes = getChildNodes(node);
 
-  console.log(getNumberOfNodeAbove(node, nodes));
+  if (node.path === "/root/nam/about.md") {
+    console.log(getDepthUp(node, nodes));
+  }
 
   return (
     <React.Fragment>
