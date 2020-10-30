@@ -194,6 +194,15 @@ const TreeNode: FC<TreeNodeProps> = (props) => {
           )}
         </NodeIcon>
 
+        {node.path === "/root/vi" && (
+          <h1>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
+            iure reiciendis libero in maxime labore eaque consequatur ipsa
+            eligendi quia ratione fuga omnis ad tenetur magni dolor inventore,
+            enim laudantium.
+          </h1>
+        )}
+
         <span
           role="button"
           onClick={() => {
