@@ -95,7 +95,7 @@ export const getDepthUp = (
   let result = 0;
 
   if (parentNode) {
-    result = result + 1 + getDepthUp(parentNode, nodes);
+    result = result + 1;
   }
 
   if (siblings.length) {
