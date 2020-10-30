@@ -61,6 +61,14 @@ const NodeIcon = styled.div`
 
 const getNodeLabel = (node: TreeNodeType) => last(node.path.split("/"));
 
+export const getAbsoluteHeight = (el: HTMLElement) => {
+  const styles = window.getComputedStyle(el);
+  const margin =
+    parseFloat(styles["marginTop"]) + parseFloat(styles["marginBottom"]);
+
+  return Math.ceil(el.offsetHeight + margin);
+};
+
 export const getDepthUp = (
   node: TreeNodeType,
   nodes: Record<string, TreeNodeType>
